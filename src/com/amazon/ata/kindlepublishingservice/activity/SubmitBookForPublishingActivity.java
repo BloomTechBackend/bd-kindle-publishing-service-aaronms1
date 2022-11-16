@@ -22,8 +22,9 @@ import javax.inject.Inject;
  * This API allows the client to submit a new book to be published in the catalog or update an existing book.
  */
 public class SubmitBookForPublishingActivity {
-
     private PublishingStatusDao publishingStatusDao;
+    private BookPublishRequestManager bookPublishRequestManager;
+    private CatalogDao catalogDao;
 
     /**
      * Instantiates a new SubmitBookForPublishingActivity object.
@@ -31,8 +32,12 @@ public class SubmitBookForPublishingActivity {
      * @param publishingStatusDao PublishingStatusDao to access the publishing status table.
      */
     @Inject
-    public SubmitBookForPublishingActivity(PublishingStatusDao publishingStatusDao) {
+    public SubmitBookForPublishingActivity(
+      PublishingStatusDao publishingStatusDao,
+      BookPublishRequestManager bookPublishRequestManager, CatalogDao catalogDao) {
         this.publishingStatusDao = publishingStatusDao;
+        this.bookPublishRequestManager = bookPublishRequestManager;
+        this.catalogDao = catalogDao;
     }
 
     /**
@@ -44,18 +49,23 @@ public class SubmitBookForPublishingActivity {
      * @return SubmitBookForPublishingResponse Response object that includes the publishing status id, which can be used
      * to check the publishing state of the book.
      */
-    public SubmitBookForPublishingResponse execute(SubmitBookForPublishingRequest request) {
-        final BookPublishRequest bookPublishRequest = BookPublishRequestConverter.toBookPublishRequest(request);
-
-        // TODO: If there is a book ID in the request, validate it exists in our catalog
-        // TODO: Submit the BookPublishRequest for processing
-
-        PublishingStatusItem item =  publishingStatusDao.setPublishingStatus(bookPublishRequest.getPublishingRecordId(),
-                PublishingRecordStatus.QUEUED,
-                bookPublishRequest.getBookId());
-
+    public SubmitBookForPublishingResponse execute(
+      SubmitBookForPublishingRequest request) {
+        final BookPublishRequest bookPublishRequest =
+          BookPublishRequestConverter.toBookPublishRequest(request);
+        if (request.getBookId() != null) {
+            catalogDao.validateBookExists(request.getBookId());
+        }
+    
+        PublishingStatusItem item = publishingStatusDao.setPublishingStatus(
+          bookPublishRequest.getPublishingRecordId(),
+          PublishingRecordStatus.QUEUED,
+          bookPublishRequest.getBookId());
+    
+        bookPublishRequestManager.addBookPublishRequest(bookPublishRequest);
+    
         return SubmitBookForPublishingResponse.builder()
-                .withPublishingRecordId(item.getPublishingRecordId())
-                .build();
+                 .withPublishingRecordId(item.getPublishingRecordId())
+                 .build();
     }
 }

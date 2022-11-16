@@ -77,4 +77,8 @@ public class PublishingStatusDao {
         dynamoDbMapper.save(item);
         return item;
     }
+    
+    public List<PublishingStatusItem> getPublishingStatuses(String id) {
+        return null;
+    }
 }

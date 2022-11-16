@@ -25,6 +25,7 @@ import javax.inject.Inject;
 public class GetBookActivity {
     private RecommendationsServiceClient recommendationServiceClient;
     private CatalogDao catalogDao;
+    
 
     /**
      * Instantiates a new GetBookActivity object.
@@ -33,7 +34,8 @@ public class GetBookActivity {
      * @param recommendationServiceClient Returns recommendations based on genre.
      */
     @Inject
-    public GetBookActivity(CatalogDao catalogDao, RecommendationsServiceClient recommendationServiceClient) {
+    public GetBookActivity(CatalogDao catalogDao,
+      RecommendationsServiceClient recommendationServiceClient) {
         this.catalogDao = catalogDao;
         this.recommendationServiceClient = recommendationServiceClient;
     }
@@ -46,12 +48,15 @@ public class GetBookActivity {
      */
 
     public GetBookResponse execute(final GetBookRequest request) {
-        CatalogItemVersion catalogItem = catalogDao.getBookFromCatalog(request.getBookId());
-        List<BookRecommendation> recommendations = recommendationServiceClient.getBookRecommendations(
+        CatalogItemVersion catalogItem =
+          catalogDao.getBookFromCatalog(request.getBookId());
+        List<BookRecommendation> recommendations =
+          recommendationServiceClient.getBookRecommendations(
             BookGenre.valueOf(catalogItem.getGenre().name()));
         return GetBookResponse.builder()
             .withBook(CatalogItemConverter.toBook(catalogItem))
-            .withRecommendations(RecommendationsCoralConverter.toCoral(recommendations))
+            .withRecommendations(RecommendationsCoralConverter
+            .toCoral(recommendations))
             .build();
     }
 }

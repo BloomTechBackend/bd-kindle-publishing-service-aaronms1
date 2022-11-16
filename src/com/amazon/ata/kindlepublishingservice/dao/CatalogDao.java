@@ -2,14 +2,12 @@ package com.amazon.ata.kindlepublishingservice.dao;
 
 import com.amazon.ata.kindlepublishingservice.dynamodb.models.CatalogItemVersion;
 import com.amazon.ata.kindlepublishingservice.exceptions.BookNotFoundException;
-import com.amazon.ata.kindlepublishingservice.publishing.KindleFormattedBook;
-import com.amazon.ata.kindlepublishingservice.utils.KindlePublishingUtils;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import org.apache.commons.lang3.StringUtils;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 
-import java.util.List;
+import java.util.*;
 import javax.inject.Inject;
 
 public class CatalogDao {
@@ -47,15 +45,55 @@ public class CatalogDao {
         CatalogItemVersion book = new CatalogItemVersion();
         book.setBookId(bookId);
 
-        DynamoDBQueryExpression<CatalogItemVersion> queryExpression = new DynamoDBQueryExpression()
+        DynamoDBQueryExpression<CatalogItemVersion> queryExpression =
+          new DynamoDBQueryExpression()
             .withHashKeyValues(book)
             .withScanIndexForward(false)
             .withLimit(1);
 
-        List<CatalogItemVersion> results = dynamoDbMapper.query(CatalogItemVersion.class, queryExpression);
+        List<CatalogItemVersion> results =
+          dynamoDbMapper.query(CatalogItemVersion.class, queryExpression);
         if (results.isEmpty()) {
             return null;
         }
         return results.get(0);
+    }
+    
+    
+    /**
+     * Implement RemoveBookFromCatalog
+     * <p>
+     * We already got a head start on this. You’ll need to now add some logic
+     * to do a soft delete. We don’t want to lose previous versions of the book
+     * that we have sold to customers. Instead, we’ll mark the current version
+     * as inactive so that it can never be returned by the GetBook operation,
+     * essentially deleted.
+     * <p>
+     * We’ll need to update our CatalogDao to implement this “delete”
+     * functionality and use that in our Activity class.
+     */
+    public boolean removeBookFromCatalog(String bookId) {
+        //MARKER:removeBookFromCatalog boolean function
+        CatalogItemVersion book = getLatestVersionOfBook(bookId);
+        if (book == null) {
+            throw new BookNotFoundException(String.format("No book found for id: %s", bookId));
+        }
+        book.setInactive(Boolean.parseBoolean(eventId));
+    
+        DynamoDBDeleteExpression deleteExpression = new DynamoDBDeleteExpression();
+        Map<String, ExpectedAttributeValue> expectedAttributeValueMap =
+          new HashMap<>();
+        expectedAttributeValueMap
+          .put("RemoveBookFromCatalog",
+             new ExpectedAttributeValue()
+               .withValue(new AttributeValue().withBOOL(true)));
+        try {
+            deleteExpression.setExpected(expectedAttributeValueMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        dynamoDbMapper.delete(book, deleteExpression);
+        return true;
     }
 }

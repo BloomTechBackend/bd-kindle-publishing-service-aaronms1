@@ -33,7 +33,12 @@ public class RemoveBookFromCatalogRequest {
     }
 
     public static Builder builder() {return new Builder();}
-
+    
+    public String getEventId() {
+        //MARKER:removeBookFromCatalog
+        return "RemoveBookFromCatalog";
+    }
+    
     public static final class Builder {
         private String bookId;
 
