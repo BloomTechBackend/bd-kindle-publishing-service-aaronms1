@@ -39,10 +39,11 @@ public class PublishingStatusDao {
      * @param bookId The id of the book associated with the request, may be null
      * @return The stored PublishingStatusItem.
      */
-    public PublishingStatusItem setPublishingStatus(String publishingRecordId,
-                                                    PublishingRecordStatus publishingRecordStatus,
-                                                    String bookId) {
-        return setPublishingStatus(publishingRecordId, publishingRecordStatus, bookId, null);
+    public PublishingStatusItem setPublishingStatus(
+      String publishingRecordId,
+      PublishingRecordStatus publishingRecordStatus, String bookId) {
+        return setPublishingStatus(
+          publishingRecordId, publishingRecordStatus, bookId, null);
     }
 
     /**
@@ -56,11 +57,13 @@ public class PublishingStatusDao {
      * @param message additional notes stored with the status
      * @return The stored PublishingStatusItem.
      */
-    public PublishingStatusItem setPublishingStatus(String publishingRecordId,
-                                                    PublishingRecordStatus publishingRecordStatus,
-                                                    String bookId,
-                                                    String message) {
-        String statusMessage = KindlePublishingUtils.generatePublishingStatusMessage(publishingRecordStatus);
+    public PublishingStatusItem setPublishingStatus(
+      String publishingRecordId,
+      PublishingRecordStatus publishingRecordStatus,
+      String bookId, String message) {
+        String statusMessage =
+          KindlePublishingUtils
+            .generatePublishingStatusMessage(publishingRecordStatus);
         if (StringUtils.isNotBlank(message)) {
             statusMessage = new StringBuffer()
                 .append(statusMessage)
@@ -68,7 +71,6 @@ public class PublishingStatusDao {
                 .append(message)
                 .toString();
         }
-
         PublishingStatusItem item = new PublishingStatusItem();
         item.setPublishingRecordId(publishingRecordId);
         item.setStatus(publishingRecordStatus);
@@ -78,7 +80,25 @@ public class PublishingStatusDao {
         return item;
     }
     
-    public List<PublishingStatusItem> getPublishingStatuses(String id) {
-        return null;
+    /**
+     * Retrieves the PublishingStatusItem for the given publishingRecordId.
+     * @param publishingRecordId The id of the record to retrieve.
+     * @return The PublishingStatusItem for the given publishingRecordId.
+     */
+    public List<PublishingStatusItem> getPublishingStatuses(
+      String publishingRecordId) {
+        PublishingStatusItem item = new PublishingStatusItem();
+        item.setPublishingRecordId(publishingRecordId);
+        DynamoDBQueryExpression<PublishingStatusItem> queryExpression =
+          new DynamoDBQueryExpression()
+            .withHashKeyValues(item)
+            .withScanIndexForward(false)
+            .withLimit(1);
+        List<PublishingStatusItem> results =
+          dynamoDbMapper.query(PublishingStatusItem.class, queryExpression);
+        if (results.isEmpty()) {
+            throw new PublishingStatusNotFoundException("No status found");
+        }
+        return results;
     }
 }

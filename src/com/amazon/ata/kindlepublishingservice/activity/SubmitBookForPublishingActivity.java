@@ -9,6 +9,7 @@ import com.amazon.ata.kindlepublishingservice.dynamodb.models.PublishingStatusIt
 import com.amazon.ata.kindlepublishingservice.enums.PublishingRecordStatus;
 import com.amazon.ata.kindlepublishingservice.publishing.BookPublishRequest;
 
+import com.amazon.ata.kindlepublishingservice.publishing.PublishRequestManager;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.commons.lang3.StringUtils;
@@ -22,9 +23,9 @@ import javax.inject.Inject;
  * This API allows the client to submit a new book to be published in the catalog or update an existing book.
  */
 public class SubmitBookForPublishingActivity {
-    private PublishingStatusDao publishingStatusDao;
-    private BookPublishRequestManager bookPublishRequestManager;
-    private CatalogDao catalogDao;
+    private PublishingStatusDao   publishingStatusDao;
+    private PublishRequestManager publishRequestManager;
+    private CatalogDao            catalogDao;
 
     /**
      * Instantiates a new SubmitBookForPublishingActivity object.
@@ -34,9 +35,9 @@ public class SubmitBookForPublishingActivity {
     @Inject
     public SubmitBookForPublishingActivity(
       PublishingStatusDao publishingStatusDao,
-      BookPublishRequestManager bookPublishRequestManager, CatalogDao catalogDao) {
+      PublishRequestManager publishRequestManager, CatalogDao catalogDao) {
         this.publishingStatusDao = publishingStatusDao;
-        this.bookPublishRequestManager = bookPublishRequestManager;
+        this.publishRequestManager = publishRequestManager;
         this.catalogDao = catalogDao;
     }
 
@@ -54,7 +55,7 @@ public class SubmitBookForPublishingActivity {
         final BookPublishRequest bookPublishRequest =
           BookPublishRequestConverter.toBookPublishRequest(request);
         if (request.getBookId() != null) {
-            catalogDao.validateBookExists(request.getBookId());
+            catalogDao.isBookInCatalog(request.getBookId());
         }
     
         PublishingStatusItem item = publishingStatusDao.setPublishingStatus(
@@ -62,7 +63,7 @@ public class SubmitBookForPublishingActivity {
           PublishingRecordStatus.QUEUED,
           bookPublishRequest.getBookId());
     
-        bookPublishRequestManager.addBookPublishRequest(bookPublishRequest);
+        publishRequestManager.addBookPublishRequest(bookPublishRequest);
     
         return SubmitBookForPublishingResponse.builder()
                  .withPublishingRecordId(item.getPublishingRecordId())

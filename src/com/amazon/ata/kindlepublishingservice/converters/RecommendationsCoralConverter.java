@@ -18,9 +18,11 @@ public class RecommendationsCoralConverter {
      * @param bookRecommendations BookRecommendations list to convert.
      * @return Coral BookRecommendations list.
      */
-    public static List<BookRecommendation> toCoral(List<com.amazon.ata.recommendationsservice.types.BookRecommendation>
-                                                       bookRecommendations) {
-        return CoralConverterUtil.convertList(bookRecommendations, RecommendationsCoralConverter::toCoral);
+    public static List<BookRecommendation> toCoral(
+      List<com.amazon.ata.recommendationsservice.types.BookRecommendation>
+        bookRecommendations) {
+        return CoralConverterUtil.convertList(
+          bookRecommendations, RecommendationsCoralConverter::toCoral);
     }
 
     /**
@@ -28,8 +30,9 @@ public class RecommendationsCoralConverter {
      * @param bookRecommendation BookRecommendation object to convert
      * @return Coral BookRecommendation object.
      */
-    public static BookRecommendation toCoral(com.amazon.ata.recommendationsservice.types.BookRecommendation
-                                                 bookRecommendation) {
+    public static BookRecommendation toCoral(
+      com.amazon.ata.recommendationsservice.types.BookRecommendation
+        bookRecommendation) {
         return BookRecommendation.builder()
             .withAsin(bookRecommendation.getAsin())
             .withAuthor(bookRecommendation.getAuthor())

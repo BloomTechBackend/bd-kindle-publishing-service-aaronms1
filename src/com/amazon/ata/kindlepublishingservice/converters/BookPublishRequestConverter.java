@@ -19,9 +19,10 @@ public class BookPublishRequestConverter {
      * @param request The SubmitBookForPublishing object to convert.
      * @return The converted BookPublishRequest.
      */
-    public static BookPublishRequest toBookPublishRequest(SubmitBookForPublishingRequest request) {
-
-        final String publishingRecordId = KindlePublishingUtils.generatePublishingRecordId();
+    public static BookPublishRequest toBookPublishRequest(
+      SubmitBookForPublishingRequest request) {
+        final String publishingRecordId =
+          KindlePublishingUtils.generatePublishingRecordId();
 
         return BookPublishRequest.builder()
             .withPublishingRecordId(publishingRecordId)

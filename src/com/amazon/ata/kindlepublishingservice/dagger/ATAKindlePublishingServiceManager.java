@@ -14,9 +14,8 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class ATAKindlePublishingServiceManager {
-
-    private static final Logger log = LogManager.getLogger(ATAKindlePublishingServiceManager.class);
-
+    private static final Logger log =
+      LogManager.getLogger(ATAKindlePublishingServiceManager.class);
     private final BookPublisher bookPublisher;
 
     /**

@@ -16,7 +16,8 @@ public final class KindleFormatConverter {
      */
     public static KindleFormattedBook format(BookPublishRequest publishRequest) {
         return KindleFormattedBook.builder()
-            .withText(KindleConversionUtils.convertTextToKindleFormat(publishRequest.getText()))
+            .withText(KindleConversionUtils
+                        .convertTextToKindleFormat(publishRequest.getText()))
             .withAuthor(publishRequest.getAuthor())
             .withTitle(publishRequest.getTitle())
             .withGenre(publishRequest.getGenre())

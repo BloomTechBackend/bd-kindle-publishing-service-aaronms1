@@ -10,9 +10,16 @@ import dagger.Provides;
 
 import javax.inject.Singleton;
 
+/**
+ * <ul>
+ *     <li>{@link DataAccessModule}
+ *     this class is used to provide a {@link DynamoDBMapper} instance to the
+ *    {@link com.amazon.ata.kindlepublishingservice} App.
+ *     </li>
+ * </ul>
+ */
 @Module
 public class DataAccessModule {
-
     @Singleton
     @Provides
     public DynamoDBMapper provideDynamoDBMapper() {

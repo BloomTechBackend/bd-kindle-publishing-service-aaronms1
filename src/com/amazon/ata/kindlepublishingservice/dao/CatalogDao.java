@@ -3,6 +3,8 @@ package com.amazon.ata.kindlepublishingservice.dao;
 import com.amazon.ata.kindlepublishingservice.dynamodb.models.CatalogItemVersion;
 import com.amazon.ata.kindlepublishingservice.exceptions.BookNotFoundException;
 
+import com.amazon.ata.kindlepublishingservice.publishing.KindleFormattedBook;
+import com.amazon.ata.kindlepublishingservice.utils.KindlePublishingUtils;
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
@@ -11,7 +13,6 @@ import java.util.*;
 import javax.inject.Inject;
 
 public class CatalogDao {
-
     private final DynamoDBMapper dynamoDbMapper;
 
     /**
@@ -36,11 +37,15 @@ public class CatalogDao {
         if (book == null || book.isInactive()) {
             throw new BookNotFoundException(String.format("No book found for id: %s", bookId));
         }
-
         return book;
     }
-
-    // Returns null if no version exists for the provided bookId
+    
+    /**
+     * Returns the latest version of the book from the catalog corresponding to the specified book id.
+     * If no version is found, returns null.
+     * @param bookId Id associated with the book.
+     * @return The corresponding CatalogItem from the catalog table.
+     */
     private CatalogItemVersion getLatestVersionOfBook(String bookId) {
         CatalogItemVersion book = new CatalogItemVersion();
         book.setBookId(bookId);
@@ -59,41 +64,55 @@ public class CatalogDao {
         return results.get(0);
     }
     
+    /**
+     * Removes the book from the catalog table.
+     * @param bookId Id associated with the book.
+     * @return The corresponding CatalogItem from the catalog table.
+     */
+    public CatalogItemVersion removeBookFromCatalog(String bookId) {
+        CatalogItemVersion book = getLatestVersionOfBook(bookId);
+        assert book != null;
+        /*assert the book is not null to avoid a null pointer exception*/
+        book.setInactive(true);
+        dynamoDbMapper.save(book);
+        return book;
+    }
     
     /**
-     * Implement RemoveBookFromCatalog
-     * <p>
-     * We already got a head start on this. You’ll need to now add some logic
-     * to do a soft delete. We don’t want to lose previous versions of the book
-     * that we have sold to customers. Instead, we’ll mark the current version
-     * as inactive so that it can never be returned by the GetBook operation,
-     * essentially deleted.
-     * <p>
-     * We’ll need to update our CatalogDao to implement this “delete”
-     * functionality and use that in our Activity class.
+     * Checks if the book is in the catalog table.
+     * @param bookId the Id associated with the book.
+     * @return True if the book is in the catalog table, false otherwise.
      */
-    public boolean removeBookFromCatalog(String bookId) {
-        //MARKER:removeBookFromCatalog boolean function
-        CatalogItemVersion book = getLatestVersionOfBook(bookId);
-        if (book == null) {
-            throw new BookNotFoundException(String.format("No book found for id: %s", bookId));
-        }
-        book.setInactive(Boolean.parseBoolean(eventId));
-    
-        DynamoDBDeleteExpression deleteExpression = new DynamoDBDeleteExpression();
-        Map<String, ExpectedAttributeValue> expectedAttributeValueMap =
-          new HashMap<>();
-        expectedAttributeValueMap
-          .put("RemoveBookFromCatalog",
-             new ExpectedAttributeValue()
-               .withValue(new AttributeValue().withBOOL(true)));
+    public boolean isBookInCatalog(String bookId) {
         try {
-            deleteExpression.setExpected(expectedAttributeValueMap);
-        } catch (Exception e) {
-            e.printStackTrace();
+            return getLatestVersionOfBook(bookId) != null;
+        } catch (BookNotFoundException e) {
+            System.out.println("Book not found: " + bookId);
+            return false;
         }
-        
-        dynamoDbMapper.delete(book, deleteExpression);
-        return true;
+    } 
+    
+    /**
+     * Adds or removes the book to the catalog table.
+     * @param formattedBook The book to add to the catalog table.
+     * @return The corresponding CatalogItem from the catalog table.
+     */
+    public CatalogItemVersion updateBookStatus(KindleFormattedBook formattedBook) {
+        CatalogItemVersion catalogItem;
+        if (formattedBook.getBookId() == null) {
+            catalogItem = new CatalogItemVersion();
+            catalogItem.setBookId(KindlePublishingUtils.generateBookId());
+            catalogItem.setVersion(1);
+            catalogItem.setInactive(false);
+        } else { catalogItem = getBookFromCatalog(formattedBook.getBookId());
+            catalogItem.setVersion(catalogItem.getVersion() + 1);
+            removeBookFromCatalog(formattedBook.getBookId());
+        }
+        catalogItem.setTitle(formattedBook.getTitle());
+        catalogItem.setAuthor(formattedBook.getAuthor());
+        catalogItem.setText(formattedBook.getText());
+        catalogItem.setGenre(formattedBook.getGenre());
+        dynamoDbMapper.save(catalogItem);
+        return catalogItem;
     }
 }
