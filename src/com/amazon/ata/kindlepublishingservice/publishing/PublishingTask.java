@@ -15,6 +15,7 @@ import javax.inject.Inject;
  *     {@link CatalogDao},
  *     {@link PublishingStatusDao}, and the
  *     {@link PublishRequestManager}objects into the {@link BookPublisher}
+ *     class
  *     </li>
  * </ul>
  */
@@ -47,8 +48,6 @@ public class PublishingTask implements Runnable {
                 e.printStackTrace();
             }
         }
-        //assert request != null;
-        //assert not null to avoid a null pointer exception
         publishingStatusDao.setPublishingStatus(
           request.getPublishingRecordId(),
           PublishingRecordStatus.IN_PROGRESS, request.getBookId());
