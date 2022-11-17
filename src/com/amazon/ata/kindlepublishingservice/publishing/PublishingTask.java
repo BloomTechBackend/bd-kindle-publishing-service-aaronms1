@@ -40,18 +40,18 @@ public class PublishingTask implements Runnable {
         while (request == null && i < 10) {
             try {
                 Thread.sleep(1000);
-                request = PublishRequestManager.getBookPublishRequestToProcess();
+                request =
+                  PublishRequestManager.getBookPublishRequestToProcess();
                 i++;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        assert request != null;
+        //assert request != null;
         //assert not null to avoid a null pointer exception
         publishingStatusDao.setPublishingStatus(
           request.getPublishingRecordId(),
-          PublishingRecordStatus.IN_PROGRESS,
-          request.getBookId());
+          PublishingRecordStatus.IN_PROGRESS, request.getBookId());
         KindleFormattedBook formattedBook =
           KindleFormatConverter.format(request);
         try {
@@ -65,6 +65,10 @@ public class PublishingTask implements Runnable {
                 request.getPublishingRecordId(),
                 PublishingRecordStatus.FAILED,
                 request.getBookId(), e.getMessage());
+            if (request.getPublishingRecordId() == null) {
+                throw new BookNotFoundException(
+                  "Book not found in catalog: " + request.getBookId());
+            }
         }
     }
 }

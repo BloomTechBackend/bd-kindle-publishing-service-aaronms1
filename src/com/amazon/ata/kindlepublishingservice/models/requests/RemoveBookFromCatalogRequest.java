@@ -42,9 +42,7 @@ public class RemoveBookFromCatalogRequest {
     public static final class Builder {
         private String bookId;
 
-        private Builder() {
-
-        }
+        private Builder() {}
 
         public Builder withBookId(String bookIdToUse) {
             this.bookId = bookIdToUse;

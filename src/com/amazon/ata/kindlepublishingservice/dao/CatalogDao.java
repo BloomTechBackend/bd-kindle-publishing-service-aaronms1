@@ -2,18 +2,17 @@ package com.amazon.ata.kindlepublishingservice.dao;
 
 import com.amazon.ata.kindlepublishingservice.dynamodb.models.CatalogItemVersion;
 import com.amazon.ata.kindlepublishingservice.exceptions.BookNotFoundException;
-
 import com.amazon.ata.kindlepublishingservice.publishing.KindleFormattedBook;
 import com.amazon.ata.kindlepublishingservice.utils.KindlePublishingUtils;
-import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 
-import java.util.*;
 import javax.inject.Inject;
+import java.util.List;
 
 public class CatalogDao {
     private final DynamoDBMapper dynamoDbMapper;
+    
 
     /**
      * Instantiates a new CatalogDao object.
@@ -71,10 +70,14 @@ public class CatalogDao {
      */
     public CatalogItemVersion removeBookFromCatalog(String bookId) {
         CatalogItemVersion book = getLatestVersionOfBook(bookId);
-        assert book != null;
-        /*assert the book is not null to avoid a null pointer exception*/
-        book.setInactive(true);
-        dynamoDbMapper.save(book);
+        if (book == null || book.isInactive()) {
+            throw new BookNotFoundException(String.format("No book found for id: %s", bookId));
+        } try {
+              book.setInactive(true);
+              dynamoDbMapper.save(book);
+            } catch (BookNotFoundException e) {
+              throw new BookNotFoundException(String.format("No book found for id: %s", bookId));
+            }
         return book;
     }
     
@@ -88,7 +91,7 @@ public class CatalogDao {
             return getLatestVersionOfBook(bookId) != null;
         } catch (BookNotFoundException e) {
             System.out.println("Book not found: " + bookId);
-            return false;
+            return true;
         }
     } 
     
@@ -113,6 +116,10 @@ public class CatalogDao {
         catalogItem.setText(formattedBook.getText());
         catalogItem.setGenre(formattedBook.getGenre());
         dynamoDbMapper.save(catalogItem);
+        
         return catalogItem;
     }
+    
+
+    
 }
