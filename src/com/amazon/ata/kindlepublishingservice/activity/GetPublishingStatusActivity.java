@@ -2,6 +2,7 @@ package com.amazon.ata.kindlepublishingservice.activity;
 
 import com.amazon.ata.kindlepublishingservice.dao.PublishingStatusDao;
 import com.amazon.ata.kindlepublishingservice.dynamodb.models.PublishingStatusItem;
+import com.amazon.ata.kindlepublishingservice.exceptions.BookNotFoundException;
 import com.amazon.ata.kindlepublishingservice.models.PublishingStatusRecord;
 import com.amazon.ata.kindlepublishingservice.models.requests.GetPublishingStatusRequest;
 import com.amazon.ata.kindlepublishingservice.models.response.GetPublishingStatusResponse;
@@ -25,6 +26,11 @@ public class GetPublishingStatusActivity {
         List<PublishingStatusRecord> records = new ArrayList<>();
         
         for (PublishingStatusItem item : items) {
+            //MARKER: check for null bookId does not work here
+//            if (item.getBookId() == null) {
+//                throw new BookNotFoundException(
+//                  "Book not found for id:\n " + item.getBookId());
+//            }
             PublishingStatusRecord record =  PublishingStatusRecord.builder()
                 .withStatus(item.getStatus().toString())
                 .withStatusMessage(item.getStatusMessage())

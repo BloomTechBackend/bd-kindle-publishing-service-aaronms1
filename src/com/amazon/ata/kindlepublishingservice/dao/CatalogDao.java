@@ -87,11 +87,11 @@ public class CatalogDao {
      * @return True if the book is in the catalog table, false otherwise.
      */
     public boolean isBookInCatalog(String bookId) {
-        try {
+        boolean bookStatus = getLatestVersionOfBook(bookId) != null;
+        if (bookStatus) {
             return getLatestVersionOfBook(bookId) != null;
-        } catch (BookNotFoundException e) {
-            System.out.println("Book not found: " + bookId);
-            return true;
+        } else {
+            throw new BookNotFoundException(String.format("No book found for id: %s", bookId));
         }
     } 
     

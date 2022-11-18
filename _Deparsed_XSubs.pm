@@ -870,6 +870,127 @@ sub _maybe_isa;
 sub downgrade;
 sub is_utf8;
 }
+package Class::C3::XS {
+sub _calculate_method_dispatch_table;
+sub _nextcan;
+sub _plsubgen;
+sub calculateMRO;
+}
+package Class::Load {
+sub is_class_loaded;
+}
+package Class::Load::XS {
+sub is_class_loaded;
+}
+package Class::MOP {
+sub blessed($) ;
+sub check_package_cache_flag($) ;
+sub get_code_info($) ;
+sub isweak($) ;
+sub weaken($) ;
+}
+package Class::MOP::Attribute {
+sub associated_class;
+sub associated_methods;
+sub blessed($) ;
+sub weaken($) ;
+}
+package Class::MOP::Class {
+sub all(&@) ;
+sub blessed($) ;
+sub constructor_class;
+sub constructor_name;
+sub destructor_class;
+sub immutable_trait;
+sub instance_metaclass;
+sub set_subname;
+}
+package Class::MOP::Instance {
+sub associated_metaclass;
+sub blessed($) ;
+sub isweak($) ;
+sub slot_hash;
+sub slots;
+sub weaken($) ;
+}
+package Class::MOP::Method {
+sub blessed($) ;
+sub body;
+sub is_stub;
+sub name;
+sub package_name;
+sub reftype($) ;
+sub weaken($) ;
+}
+package Class::MOP::Method::Accessor {
+sub blessed($) ;
+sub weaken($) ;
+}
+package Class::MOP::Method::Constructor {
+sub blessed($) ;
+sub weaken($) ;
+}
+package Class::MOP::Method::Generated {
+sub definition_context;
+sub is_inline;
+}
+package Class::MOP::Method::Inlined {
+sub _expected_method_class;
+sub refaddr($) ;
+}
+package Class::MOP::Method::Meta {
+sub blessed($) ;
+sub weaken($) ;
+}
+package Class::MOP::Method::Wrapped {
+sub blessed($) ;
+sub set_subname;
+}
+package Class::MOP::Mixin {
+sub blessed($) ;
+}
+package Class::MOP::Mixin::AttributeCore {
+sub accessor;
+sub blessed($) ;
+sub builder;
+sub clearer;
+sub definition_context;
+sub init_arg;
+sub initializer;
+sub insertion_order;
+sub name;
+sub predicate;
+sub reader;
+sub writer;
+}
+package Class::MOP::Mixin::HasAttributes {
+sub _attribute_map;
+sub attribute_metaclass;
+sub blessed($) ;
+}
+package Class::MOP::Mixin::HasMethods {
+sub _method_map;
+sub blessed($) ;
+sub method_metaclass;
+sub reftype($) ;
+sub set_subname;
+sub wrapped_method_metaclass;
+}
+package Class::MOP::Mixin::HasOverloads {
+sub blessed($) ;
+}
+package Class::MOP::Object {
+sub blessed($) ;
+}
+package Class::MOP::Overload {
+sub blessed($) ;
+sub weaken($) ;
+}
+package Class::MOP::Package {
+sub blessed($) ;
+sub name;
+sub weaken($) ;
+}
 package Class::XSAccessor {
 sub __entersub_optimized__() ;
 sub _newxs_compat_accessor;
@@ -1007,6 +1128,356 @@ sub abs_path;
 sub fastcwd;
 sub getcwd;
 sub realpath;
+}
+package DBD::Pg {
+sub PG_ACLITEM() ;
+sub PG_ACLITEMARRAY() ;
+sub PG_ANY() ;
+sub PG_ANYARRAY() ;
+sub PG_ANYCOMPATIBLE() ;
+sub PG_ANYCOMPATIBLEARRAY() ;
+sub PG_ANYCOMPATIBLEMULTIRANGE() ;
+sub PG_ANYCOMPATIBLENONARRAY() ;
+sub PG_ANYCOMPATIBLERANGE() ;
+sub PG_ANYELEMENT() ;
+sub PG_ANYENUM() ;
+sub PG_ANYMULTIRANGE() ;
+sub PG_ANYNONARRAY() ;
+sub PG_ANYRANGE() ;
+sub PG_ASYNC() ;
+sub PG_BIT() ;
+sub PG_BITARRAY() ;
+sub PG_BOOL() ;
+sub PG_BOOLARRAY() ;
+sub PG_BOX() ;
+sub PG_BOXARRAY() ;
+sub PG_BPCHAR() ;
+sub PG_BPCHARARRAY() ;
+sub PG_BYTEA() ;
+sub PG_BYTEAARRAY() ;
+sub PG_CHAR() ;
+sub PG_CHARARRAY() ;
+sub PG_CID() ;
+sub PG_CIDARRAY() ;
+sub PG_CIDR() ;
+sub PG_CIDRARRAY() ;
+sub PG_CIRCLE() ;
+sub PG_CIRCLEARRAY() ;
+sub PG_CSTRING() ;
+sub PG_CSTRINGARRAY() ;
+sub PG_DATE() ;
+sub PG_DATEARRAY() ;
+sub PG_DATEMULTIRANGE() ;
+sub PG_DATEMULTIRANGEARRAY() ;
+sub PG_DATERANGE() ;
+sub PG_DATERANGEARRAY() ;
+sub PG_EVENT_TRIGGER() ;
+sub PG_FDW_HANDLER() ;
+sub PG_FLOAT4() ;
+sub PG_FLOAT4ARRAY() ;
+sub PG_FLOAT8() ;
+sub PG_FLOAT8ARRAY() ;
+sub PG_GTSVECTOR() ;
+sub PG_GTSVECTORARRAY() ;
+sub PG_INDEX_AM_HANDLER() ;
+sub PG_INET() ;
+sub PG_INETARRAY() ;
+sub PG_INT2() ;
+sub PG_INT2ARRAY() ;
+sub PG_INT2VECTOR() ;
+sub PG_INT2VECTORARRAY() ;
+sub PG_INT4() ;
+sub PG_INT4ARRAY() ;
+sub PG_INT4MULTIRANGE() ;
+sub PG_INT4MULTIRANGEARRAY() ;
+sub PG_INT4RANGE() ;
+sub PG_INT4RANGEARRAY() ;
+sub PG_INT8() ;
+sub PG_INT8ARRAY() ;
+sub PG_INT8MULTIRANGE() ;
+sub PG_INT8MULTIRANGEARRAY() ;
+sub PG_INT8RANGE() ;
+sub PG_INT8RANGEARRAY() ;
+sub PG_INTERNAL() ;
+sub PG_INTERVAL() ;
+sub PG_INTERVALARRAY() ;
+sub PG_JSON() ;
+sub PG_JSONARRAY() ;
+sub PG_JSONB() ;
+sub PG_JSONBARRAY() ;
+sub PG_JSONPATH() ;
+sub PG_JSONPATHARRAY() ;
+sub PG_LANGUAGE_HANDLER() ;
+sub PG_LINE() ;
+sub PG_LINEARRAY() ;
+sub PG_LSEG() ;
+sub PG_LSEGARRAY() ;
+sub PG_MACADDR() ;
+sub PG_MACADDR8() ;
+sub PG_MACADDR8ARRAY() ;
+sub PG_MACADDRARRAY() ;
+sub PG_MONEY() ;
+sub PG_MONEYARRAY() ;
+sub PG_NAME() ;
+sub PG_NAMEARRAY() ;
+sub PG_NUMERIC() ;
+sub PG_NUMERICARRAY() ;
+sub PG_NUMMULTIRANGE() ;
+sub PG_NUMMULTIRANGEARRAY() ;
+sub PG_NUMRANGE() ;
+sub PG_NUMRANGEARRAY() ;
+sub PG_OID() ;
+sub PG_OIDARRAY() ;
+sub PG_OIDVECTOR() ;
+sub PG_OIDVECTORARRAY() ;
+sub PG_OLDQUERY_CANCEL() ;
+sub PG_OLDQUERY_WAIT() ;
+sub PG_PATH() ;
+sub PG_PATHARRAY() ;
+sub PG_PG_ATTRIBUTE() ;
+sub PG_PG_ATTRIBUTEARRAY() ;
+sub PG_PG_BRIN_BLOOM_SUMMARY() ;
+sub PG_PG_BRIN_MINMAX_MULTI_SUMMARY() ;
+sub PG_PG_CLASS() ;
+sub PG_PG_CLASSARRAY() ;
+sub PG_PG_DDL_COMMAND() ;
+sub PG_PG_DEPENDENCIES() ;
+sub PG_PG_LSN() ;
+sub PG_PG_LSNARRAY() ;
+sub PG_PG_MCV_LIST() ;
+sub PG_PG_NDISTINCT() ;
+sub PG_PG_NODE_TREE() ;
+sub PG_PG_PROC() ;
+sub PG_PG_PROCARRAY() ;
+sub PG_PG_SNAPSHOT() ;
+sub PG_PG_SNAPSHOTARRAY() ;
+sub PG_PG_TYPE() ;
+sub PG_PG_TYPEARRAY() ;
+sub PG_POINT() ;
+sub PG_POINTARRAY() ;
+sub PG_POLYGON() ;
+sub PG_POLYGONARRAY() ;
+sub PG_RECORD() ;
+sub PG_RECORDARRAY() ;
+sub PG_REFCURSOR() ;
+sub PG_REFCURSORARRAY() ;
+sub PG_REGCLASS() ;
+sub PG_REGCLASSARRAY() ;
+sub PG_REGCOLLATION() ;
+sub PG_REGCOLLATIONARRAY() ;
+sub PG_REGCONFIG() ;
+sub PG_REGCONFIGARRAY() ;
+sub PG_REGDICTIONARY() ;
+sub PG_REGDICTIONARYARRAY() ;
+sub PG_REGNAMESPACE() ;
+sub PG_REGNAMESPACEARRAY() ;
+sub PG_REGOPER() ;
+sub PG_REGOPERARRAY() ;
+sub PG_REGOPERATOR() ;
+sub PG_REGOPERATORARRAY() ;
+sub PG_REGPROC() ;
+sub PG_REGPROCARRAY() ;
+sub PG_REGPROCEDURE() ;
+sub PG_REGPROCEDUREARRAY() ;
+sub PG_REGROLE() ;
+sub PG_REGROLEARRAY() ;
+sub PG_REGTYPE() ;
+sub PG_REGTYPEARRAY() ;
+sub PG_TABLE_AM_HANDLER() ;
+sub PG_TEXT() ;
+sub PG_TEXTARRAY() ;
+sub PG_TID() ;
+sub PG_TIDARRAY() ;
+sub PG_TIME() ;
+sub PG_TIMEARRAY() ;
+sub PG_TIMESTAMP() ;
+sub PG_TIMESTAMPARRAY() ;
+sub PG_TIMESTAMPTZ() ;
+sub PG_TIMESTAMPTZARRAY() ;
+sub PG_TIMETZ() ;
+sub PG_TIMETZARRAY() ;
+sub PG_TRIGGER() ;
+sub PG_TSMULTIRANGE() ;
+sub PG_TSMULTIRANGEARRAY() ;
+sub PG_TSM_HANDLER() ;
+sub PG_TSQUERY() ;
+sub PG_TSQUERYARRAY() ;
+sub PG_TSRANGE() ;
+sub PG_TSRANGEARRAY() ;
+sub PG_TSTZMULTIRANGE() ;
+sub PG_TSTZMULTIRANGEARRAY() ;
+sub PG_TSTZRANGE() ;
+sub PG_TSTZRANGEARRAY() ;
+sub PG_TSVECTOR() ;
+sub PG_TSVECTORARRAY() ;
+sub PG_TXID_SNAPSHOT() ;
+sub PG_TXID_SNAPSHOTARRAY() ;
+sub PG_UNKNOWN() ;
+sub PG_UUID() ;
+sub PG_UUIDARRAY() ;
+sub PG_VARBIT() ;
+sub PG_VARBITARRAY() ;
+sub PG_VARCHAR() ;
+sub PG_VARCHARARRAY() ;
+sub PG_VOID() ;
+sub PG_XID() ;
+sub PG_XID8() ;
+sub PG_XID8ARRAY() ;
+sub PG_XIDARRAY() ;
+sub PG_XML() ;
+sub PG_XMLARRAY() ;
+sub constant() ;
+}
+package DBD::Pg::db {
+sub DESTROY;
+sub FETCH;
+sub SQL_ALL_TYPES() ;
+sub SQL_ARRAY() ;
+sub SQL_ARRAY_LOCATOR() ;
+sub SQL_BIGINT() ;
+sub SQL_BINARY() ;
+sub SQL_BIT() ;
+sub SQL_BLOB() ;
+sub SQL_BLOB_LOCATOR() ;
+sub SQL_BOOLEAN() ;
+sub SQL_CHAR() ;
+sub SQL_CLOB() ;
+sub SQL_CLOB_LOCATOR() ;
+sub SQL_DATE() ;
+sub SQL_DATETIME() ;
+sub SQL_DECIMAL() ;
+sub SQL_DOUBLE() ;
+sub SQL_FLOAT() ;
+sub SQL_GUID() ;
+sub SQL_INTEGER() ;
+sub SQL_INTERVAL() ;
+sub SQL_INTERVAL_DAY() ;
+sub SQL_INTERVAL_DAY_TO_HOUR() ;
+sub SQL_INTERVAL_DAY_TO_MINUTE() ;
+sub SQL_INTERVAL_DAY_TO_SECOND() ;
+sub SQL_INTERVAL_HOUR() ;
+sub SQL_INTERVAL_HOUR_TO_MINUTE() ;
+sub SQL_INTERVAL_HOUR_TO_SECOND() ;
+sub SQL_INTERVAL_MINUTE() ;
+sub SQL_INTERVAL_MINUTE_TO_SECOND() ;
+sub SQL_INTERVAL_MONTH() ;
+sub SQL_INTERVAL_SECOND() ;
+sub SQL_INTERVAL_YEAR() ;
+sub SQL_INTERVAL_YEAR_TO_MONTH() ;
+sub SQL_LONGVARBINARY() ;
+sub SQL_LONGVARCHAR() ;
+sub SQL_MULTISET() ;
+sub SQL_MULTISET_LOCATOR() ;
+sub SQL_NUMERIC() ;
+sub SQL_REAL() ;
+sub SQL_REF() ;
+sub SQL_ROW() ;
+sub SQL_SMALLINT() ;
+sub SQL_TIME() ;
+sub SQL_TIMESTAMP() ;
+sub SQL_TINYINT() ;
+sub SQL_TYPE_DATE() ;
+sub SQL_TYPE_TIME() ;
+sub SQL_TYPE_TIMESTAMP() ;
+sub SQL_TYPE_TIMESTAMP_WITH_TIMEZONE() ;
+sub SQL_TYPE_TIME_WITH_TIMEZONE() ;
+sub SQL_UDT() ;
+sub SQL_UDT_LOCATOR() ;
+sub SQL_UNKNOWN_TYPE() ;
+sub SQL_VARBINARY() ;
+sub SQL_VARCHAR() ;
+sub SQL_WCHAR() ;
+sub SQL_WLONGVARCHAR() ;
+sub SQL_WVARCHAR() ;
+sub STORE;
+sub _login;
+sub _pg_type_info;
+sub _ping;
+sub commit;
+sub disconnect;
+sub do($$;$@) ;
+sub endcopy;
+sub getfd;
+sub getline;
+sub lo_close;
+sub lo_creat;
+sub lo_export;
+sub lo_import;
+sub lo_lseek;
+sub lo_open;
+sub lo_read;
+sub lo_tell;
+sub lo_unlink;
+sub lo_write;
+sub pg_cancel;
+sub pg_endcopy;
+sub pg_error_field;
+sub pg_getcopydata;
+sub pg_getcopydata_async;
+sub pg_getline;
+sub pg_lo_close;
+sub pg_lo_creat;
+sub pg_lo_export;
+sub pg_lo_import;
+sub pg_lo_import_with_oid;
+sub pg_lo_lseek64;
+sub pg_lo_lseek;
+sub pg_lo_open;
+sub pg_lo_read;
+sub pg_lo_tell64;
+sub pg_lo_tell;
+sub pg_lo_truncate64;
+sub pg_lo_truncate;
+sub pg_lo_unlink;
+sub pg_lo_write;
+sub pg_notifies;
+sub pg_putcopydata;
+sub pg_putcopyend;
+sub pg_putline;
+sub pg_ready;
+sub pg_release;
+sub pg_result;
+sub pg_rollback_to;
+sub pg_savepoint;
+sub pg_server_trace;
+sub pg_server_untrace;
+sub putline;
+sub quote;
+sub rollback;
+sub selectall_arrayref;
+sub selectrow_array;
+sub selectrow_arrayref;
+sub state;
+}
+package DBD::Pg::dr {
+sub dbixs_revision;
+sub discon_all_;
+sub disconnect_all;
+}
+package DBD::Pg::st {
+sub DESTROY;
+sub FETCH;
+sub FETCH_attrib;
+sub STORE;
+sub _prepare;
+sub bind_param;
+sub bind_param_inout;
+sub blob_read;
+sub cancel;
+sub execute;
+sub fetch;
+sub fetchall_arrayref;
+sub fetchrow;
+sub fetchrow_array;
+sub fetchrow_arrayref;
+sub finish;
+sub pg_cancel;
+sub pg_canonical_ids;
+sub pg_canonical_names;
+sub pg_ready;
+sub pg_result;
+sub rows;
+sub state;
 }
 package DBD::SQLite {
 sub ALTER_TABLE() ;
@@ -1935,6 +2406,17 @@ sub utf8;
 package Devel::CallChecker {
 sub callchecker0_h;
 }
+package Devel::Caller {
+sub _context_cv;
+sub _context_op;
+}
+package Devel::LexAlias {
+sub _lexalias;
+}
+package Devel::OverloadInfo {
+sub blessed($) ;
+sub subname;
+}
 package Devel::Size {
 sub size;
 sub total_size;
@@ -2088,6 +2570,9 @@ sub renewed;
 package Encode::utf8 {
 sub decode;
 sub encode;
+}
+package Eval::Closure {
+sub reftype($) ;
 }
 package FCGI {
 sub Accept($) ;
@@ -3361,6 +3846,9 @@ sub first(&@) ;
 sub head($@) ;
 sub max(@) ;
 sub maxstr(@) ;
+sub mesh;
+sub mesh_longest;
+sub mesh_shortest;
 sub min(@) ;
 sub minstr(@) ;
 sub none(&@) ;
@@ -3384,6 +3872,9 @@ sub uniqint(@) ;
 sub uniqnum(@) ;
 sub uniqstr(@) ;
 sub unpairs(@) ;
+sub zip;
+sub zip_longest;
+sub zip_shortest;
 }
 package Locale::gettext {
 sub LC_SYNTAX;
@@ -3409,6 +3900,109 @@ sub textdomain;
 }
 package MIME::Charset {
 sub is_utf8($;$) ;
+}
+package Moose {
+sub is_class_loaded;
+}
+package Moose::Exporter {
+sub _export_is_flagged;
+sub _flag_as_reexport;
+sub is_class_loaded;
+sub reftype($) ;
+sub set_subname;
+sub uniq(@) ;
+}
+package Moose::Meta::Attribute {
+sub any(&@) ;
+sub blessed($) ;
+}
+package Moose::Meta::Class {
+sub any(&@) ;
+sub blessed($) ;
+}
+package Moose::Meta::Class::Immutable::Trait {
+sub blessed($) ;
+}
+package Moose::Meta::Method::Constructor {
+sub weaken($) ;
+}
+package Moose::Meta::Method::Delegation {
+sub blessed($) ;
+sub weaken($) ;
+}
+package Moose::Meta::Method::Destructor {
+sub blessed($) ;
+sub weaken($) ;
+}
+package Moose::Meta::Object::Trait {
+sub blessed($) ;
+}
+package Moose::Meta::Role {
+sub blessed($) ;
+}
+package Moose::Meta::Role::Application {
+sub all(&@) ;
+}
+package Moose::Meta::Role::Application::RoleSummation {
+sub all(&@) ;
+sub blessed($) ;
+}
+package Moose::Meta::Role::Application::ToClass {
+sub first(&@) ;
+sub weaken($) ;
+}
+package Moose::Meta::Role::Application::ToInstance {
+sub _reset_amagic;
+sub all(&@) ;
+sub blessed($) ;
+}
+package Moose::Meta::Role::Attribute {
+sub all(&@) ;
+sub blessed($) ;
+sub weaken($) ;
+}
+package Moose::Meta::Role::Composite {
+sub blessed($) ;
+}
+package Moose::Meta::TypeCoercion::Union {
+sub blessed($) ;
+}
+package Moose::Meta::TypeConstraint {
+sub refaddr($) ;
+sub set_subname;
+}
+package Moose::Meta::TypeConstraint::DuckType {
+sub all(&@) ;
+sub blessed($) ;
+}
+package Moose::Meta::TypeConstraint::Parameterized {
+sub blessed($) ;
+}
+package Moose::Meta::TypeConstraint::Registry {
+sub blessed($) ;
+}
+package Moose::Meta::TypeConstraint::Union {
+sub all(&@) ;
+sub first(&@) ;
+}
+package Moose::Util {
+sub all(&@) ;
+sub any(&@) ;
+sub blessed($) ;
+sub first(&@) ;
+}
+package Moose::Util::MetaRole {
+sub all(&@) ;
+sub blessed($) ;
+sub first(&@) ;
+}
+package Moose::Util::TypeConstraints {
+sub blessed($) ;
+}
+package Moose::Util::TypeConstraints::Builtins {
+sub _RegexpRef;
+sub blessed($) ;
+sub is_class_loaded;
 }
 package Mouse {
 sub is_class_loaded;
@@ -3699,6 +4293,24 @@ sub _create($$$) ;
 }
 package Net::DBus::Binding::Server {
 sub _open($) ;
+}
+package Net::LibIDN {
+sub constant;
+sub idn_prep_iscsi($;$) ;
+sub idn_prep_kerberos5($;$) ;
+sub idn_prep_name($;$) ;
+sub idn_prep_node($;$) ;
+sub idn_prep_plain($;$) ;
+sub idn_prep_resource($;$) ;
+sub idn_prep_sasl($;$) ;
+sub idn_prep_trace($;$) ;
+sub idn_punycode_decode($;$) ;
+sub idn_punycode_encode($;$) ;
+sub idn_to_ascii($;$$) ;
+sub idn_to_unicode($;$$) ;
+sub tld_check($$;$$) ;
+sub tld_get($) ;
+sub tld_get_table($) ;
 }
 package Net::SSLeay {
 sub AF_802() ;
@@ -4974,6 +5586,24 @@ sub setlflag;
 sub setoflag;
 sub setospeed;
 }
+package Package::DeprecationManager {
+sub _HASH0($) ;
+sub any(&@) ;
+sub subname;
+}
+package Package::Stash {
+sub add_symbol;
+sub get_all_symbols;
+sub get_or_add_symbol;
+sub get_symbol;
+sub has_symbol;
+sub list_all_symbols;
+sub name;
+sub namespace;
+sub new;
+sub remove_glob;
+sub remove_symbol;
+}
 package Package::Stash::XS {
 sub add_symbol;
 sub get_all_symbols;
@@ -4986,6 +5616,15 @@ sub namespace;
 sub new;
 sub remove_glob;
 sub remove_symbol;
+}
+package PadWalker {
+sub _upcontext;
+sub closed_over;
+sub peek_my;
+sub peek_our;
+sub peek_sub;
+sub set_closed_over;
+sub var_name;
 }
 package Params::Classify {
 sub blessed_class($) ;
@@ -5511,11 +6150,18 @@ package Time::Moment::Internal {
 sub orthodox_easter_sunday;
 sub western_easter_sunday;
 }
+package Try::Tiny {
+sub _subname;
+}
 package UNIVERSAL {
 sub DOES;
 sub VERSION;
 sub can;
 sub isa;
+}
+package URI::Escape::XS {
+sub decodeURIComponent($) ;
+sub encodeURIComponent($) ;
 }
 package UUID {
 sub clear($) ;

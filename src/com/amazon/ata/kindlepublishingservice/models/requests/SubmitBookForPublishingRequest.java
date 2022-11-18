@@ -1,5 +1,7 @@
 package com.amazon.ata.kindlepublishingservice.models.requests;
 
+import com.amazon.ata.kindlepublishingservice.exceptions.BookNotFoundException;
+
 import java.util.Objects;
 
 public class SubmitBookForPublishingRequest {
@@ -9,7 +11,8 @@ public class SubmitBookForPublishingRequest {
     private String text;
     private String genre;
 
-    public SubmitBookForPublishingRequest(String bookId, String title, String author, String text, String genre) {
+    public SubmitBookForPublishingRequest(
+      String bookId, String title, String author, String text, String genre) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
@@ -18,7 +21,12 @@ public class SubmitBookForPublishingRequest {
     }
 
     public String getBookId() {
-        return bookId;
+//        //TODO if the bookId does not exist, throw a BookNotFoundException
+//         does not work here
+//        if (bookId == null) {
+//            throw new BookNotFoundException("Book not found");
+//        }
+            return bookId;
     }
 
     public void setBookId(String bookId) {
