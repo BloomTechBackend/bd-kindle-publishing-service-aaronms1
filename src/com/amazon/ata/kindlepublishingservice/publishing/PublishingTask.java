@@ -11,7 +11,7 @@ import javax.inject.Inject;
 /**
  * <ul>
  *     <li>{@link PublishingTask}
- *     This class is used to handle the task of injecting the
+ *     This immutable  class is used to handle the task of injecting the
  *     {@link CatalogDao},
  *     {@link PublishingStatusDao}, and the
  *     {@link PublishRequestManager}objects into the {@link BookPublisher}
@@ -20,29 +20,40 @@ import javax.inject.Inject;
  * </ul>
  */
 public class PublishingTask implements Runnable {
-    private CatalogDao catalogDao;
-    private PublishingStatusDao publishingStatusDao;
-    private PublishRequestManager publishRequestManager;
+    private final CatalogDao            catalogDao;
+    private final PublishingStatusDao   publishingStatusDao;
+    private final PublishRequestManager requestManager;
 
     @Inject
     public PublishingTask(CatalogDao catalogDao,
                           PublishingStatusDao publishingStatusDao,
-                          PublishRequestManager publishRequestManager) {
+                          PublishRequestManager requestManager) {
         this.catalogDao = catalogDao;
         this.publishingStatusDao = publishingStatusDao;
-        this.publishRequestManager = publishRequestManager;
+        this.requestManager =  requestManager;
     }
 
+    /**
+     * <ul>
+     *     <li>{@link PublishingTask#run()}
+     *     This method is used to run the task of publishing a book, and also
+     *     handles catching {@link BookNotFoundException}if the request is not
+     *     found, then the status of the book is set to
+     *     {@link PublishingRecordStatus#FAILED}, and the thread can be
+     *     terminated.
+     *     Otherwise {@link PublishingRecordStatus} is set to SUCCESSFUL.
+     *     </li>
+     * </ul>
+     */
     @Override
     public void run() {
         BookPublishRequest request =
-          PublishRequestManager.getBookPublishRequestToProcess();
+          requestManager.getBookPublishRequestToProcess();
         int i = 0;
-        while (request == null && i < 10) {
+        while (request == null && i < 500) {
             try {
                 Thread.sleep(1000);
-                request =
-                  PublishRequestManager.getBookPublishRequestToProcess();
+                request = requestManager.getBookPublishRequestToProcess();
                 i++;
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -51,19 +62,19 @@ public class PublishingTask implements Runnable {
         publishingStatusDao.setPublishingStatus(
           request.getPublishingRecordId(),
           PublishingRecordStatus.IN_PROGRESS, request.getBookId());
-        KindleFormattedBook formattedBook =
+        KindleFormattedBook fBook =
           KindleFormatConverter.format(request);
         try {
-            CatalogItemVersion book =
-              catalogDao.updateBookStatus(formattedBook);
+            CatalogItemVersion book = catalogDao.updateBookStatus(fBook);
             publishingStatusDao.setPublishingStatus(
                 request.getPublishingRecordId(),
                 PublishingRecordStatus.SUCCESSFUL, book.getBookId());
         } catch (BookNotFoundException e) {
             publishingStatusDao.setPublishingStatus(
-                request.getPublishingRecordId(),
-                PublishingRecordStatus.FAILED,
-                request.getBookId(), e.getMessage());
+              request.getPublishingRecordId(),
+              PublishingRecordStatus.FAILED, request.getBookId(),
+              e.getMessage());
+        } catch (Exception e) {
             if (request.getPublishingRecordId() == null) {
                 throw new BookNotFoundException(
                   "Book not found in catalog: " + request.getBookId());

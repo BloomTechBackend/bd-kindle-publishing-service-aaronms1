@@ -17,29 +17,29 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * </ul>
  */
 public class PublishRequestManager {
-    private static Queue<BookPublishRequest> bookPublishRequestQueue;
+    private Queue<BookPublishRequest> bookPublishRequestQueue;
     
     @Inject
     public PublishRequestManager() {
-        bookPublishRequestQueue = new ConcurrentLinkedQueue<>();
+        this.bookPublishRequestQueue = new ConcurrentLinkedQueue<>();
     }
     
     public Queue<BookPublishRequest> getBookPublishRequestQueue() {
         Queue<BookPublishRequest> copyQueue =
-          new ConcurrentLinkedQueue<>(bookPublishRequestQueue);
+          new ConcurrentLinkedQueue<>(this.bookPublishRequestQueue);
         return copyQueue;
     }
     
     public void setBookPublishRequestQueue(
       Queue<BookPublishRequest> bookPublishRequestQueue) {
-        PublishRequestManager.bookPublishRequestQueue = bookPublishRequestQueue;
+        this.bookPublishRequestQueue = bookPublishRequestQueue;
     }
     
     public void addBookPublishRequest(BookPublishRequest bookPublishRequest) {
         bookPublishRequestQueue.add(bookPublishRequest);
     }
     
-    public static BookPublishRequest getBookPublishRequestToProcess() {
+    public BookPublishRequest getBookPublishRequestToProcess() {
         return bookPublishRequestQueue.poll();
     }
     

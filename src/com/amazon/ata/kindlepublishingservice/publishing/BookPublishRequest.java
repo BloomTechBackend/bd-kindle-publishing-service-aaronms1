@@ -3,10 +3,14 @@ package com.amazon.ata.kindlepublishingservice.publishing;
 import com.amazon.ata.recommendationsservice.types.BookGenre;
 
 /**
- * Class representing a book publish request object.
+ * <ul>
+ *     <li>{@link BookPublishRequest}
+ *     This class is an immutable class used to build the request object for
+ *     the {@link BookPublisher} class
+ *     </li>
+ * </ul>
  */
 public final class BookPublishRequest {
-
     private final String publishingRecordId;
     private final String bookId;
     private final String title;
@@ -147,7 +151,6 @@ public final class BookPublishRequest {
 
         /**
          *  Returns a BookPublishRequest built from the parameters previously set.
-         *
          * @return a BookPublishRequest with parameters of this Builder.
          */
         public BookPublishRequest build() {
